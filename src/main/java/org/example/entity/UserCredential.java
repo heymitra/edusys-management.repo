@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.base.entity.BaseEntity;
-
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,11 +17,19 @@ import org.example.base.entity.BaseEntity;
 @Table(name = "user_credentials")
 public class UserCredential extends BaseEntity<Long> {
 
+    public UserCredential(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+
     @Column(unique = true)
+    @NotNull(message = "cannot be null")
     private String username;
 
+    @NotNull(message = "cannot be null")
     private String password;
 
     @OneToOne(mappedBy = "userCredential", cascade = CascadeType.ALL)
-    private UserInfo userRole;
+    private UserInfo userInfo;
 }
