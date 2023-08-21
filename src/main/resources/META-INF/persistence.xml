@@ -11,10 +11,13 @@
       <property name="javax.persistence.jdbc.password" value="postgrepass"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
 
-      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.format_sql" value="true"/>
-    </properties>
+      <property name="hibernate.format_sql" value="false"/>
+      <property name="hibernate.use_sql_comments" value="false"/>
 
+      <!-- Add the validation mode property -->
+      <property name="javax.persistence.validation.mode" value="AUTO"/>
+    </properties>
   </persistence-unit>
 </persistence>
