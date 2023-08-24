@@ -21,11 +21,12 @@ import java.util.List;
 @Table(name = "users_info")
 public class UserInfo extends BaseEntity<Long> {
 
-    public UserInfo(String name, String surname, UserRoleEnum role, String professorPosition, UserCredential userCredential) {
+    public UserInfo(String name, String surname, UserRoleEnum role, String professorPosition, int studentTerm, UserCredential userCredential) {
         this.name = name;
         this.surname = surname;
         this.role = role;
         this.professorPosition = professorPosition;
+        this.studentTerm = studentTerm;
         this.userCredential = userCredential;
     }
 
@@ -39,7 +40,11 @@ public class UserInfo extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
+    @Column(name = "professor_position")
     private String professorPosition;
+
+    @Column(name = "student_term")
+    private int studentTerm;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_credential_id")
@@ -50,4 +55,13 @@ public class UserInfo extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "studentInfo")
     private List<SelectedCourse> selectedCourses;
+
+    @Override
+    public String toString() {
+        return "\n\tUserInfo: " +
+                "\n\t\tid: " + id +
+                "\n\t\tname: " + name +
+                "\n\t\tsurname: " + surname +
+                "\n\t\trole: " + role;
+    }
 }

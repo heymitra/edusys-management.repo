@@ -3,15 +3,16 @@ package org.example.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.example.base.entity.BaseEntity;
 
 @Getter
 @Setter
 
 @Entity
-@Table(name = "selected_courses")
+@Table(name = "selected_courses", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"course_id", "student_info_id"})
+})
 public class SelectedCourse extends BaseEntity<Long> {
 
     @ManyToOne
@@ -28,7 +29,9 @@ public class SelectedCourse extends BaseEntity<Long> {
 
     private boolean passed;
 
-    @Min(value = 1, message = "Semester cannot be zero or negative")
-    @Column (name = "student_semester")
+    private boolean evaluated;
+
+    @Min(value = 0, message = "Semester cannot be negative")
+    @Column(name = "student_semester")
     private int studentSemester;
 }

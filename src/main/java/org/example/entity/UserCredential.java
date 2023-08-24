@@ -32,4 +32,12 @@ public class UserCredential extends BaseEntity<Long> {
 
     @OneToOne(mappedBy = "userCredential", cascade = CascadeType.ALL)
     private UserInfo userInfo;
+
+    @Override
+    public String toString() {
+        return "\nUserCredential: " +
+                "\n\tid: " + id +
+                "\n\tusername: " + username +
+                "\n\tpassword: " + password;
+    }
 }
