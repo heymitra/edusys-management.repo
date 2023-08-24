@@ -5,12 +5,13 @@ import org.example.base.entity.BaseEntity;
 import org.example.base.repository.BaseRepository;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseRepositoryImpl<E extends BaseEntity<ID>, ID extends Serializable>
         implements BaseRepository<E, ID> {
 
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
 
     public BaseRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -25,8 +26,8 @@ public abstract class BaseRepositoryImpl<E extends BaseEntity<ID>, ID extends Se
     }
 
     @Override
-    public void deleteById(ID id) {
-        entityManager.remove(id);
+    public void delete(E entity) {
+        entityManager.remove(entity);
     }
 
     @Override
@@ -38,6 +39,11 @@ public abstract class BaseRepositoryImpl<E extends BaseEntity<ID>, ID extends Se
     @Override
     public Optional<E> findById(ID id) {
         return Optional.ofNullable((entityManager.find(getEntityClass(), id)));
+    }
+
+    @Override
+    public List<E> loadAll() {
+        return entityManager.createQuery("FROM " + getEntityClass().getSimpleName(), getEntityClass()).getResultList();
     }
 
     @Override
