@@ -3,18 +3,26 @@ package org.example.repository.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.example.base.repository.impl.BaseRepositoryImpl;
-import org.example.entity.CourseInfoDTO;
+import org.example.entity.DTO.CourseInfoDTO;
+import org.example.entity.DTO.StudentInfoDTO;
 import org.example.entity.SelectedCourse;
 import org.example.repository.SelectedCourseRepository;
 
 import java.util.List;
 
-public class SelectedCourseRepositoryImpl extends BaseRepositoryImpl<SelectedCourse, Long> implements SelectedCourseRepository {
+public class SelectedCourseRepositoryImpl extends BaseRepositoryImpl<SelectedCourse, Long>
+        implements SelectedCourseRepository {
+
     public SelectedCourseRepositoryImpl(EntityManager entityManager) {
         super(entityManager);
     }
 
     @Override
+    public SelectedCourse save(SelectedCourse entity) {
+        entityManager.persist(entity);
+        return entity;
+    }
+
     public Class<SelectedCourse> getEntityClass() {
         return SelectedCourse.class;
     }
@@ -86,7 +94,7 @@ public class SelectedCourseRepositoryImpl extends BaseRepositoryImpl<SelectedCou
     @Override
     public List<CourseInfoDTO> viewTakenCourseListByStudent(Long studentId, int currentSemester) {
         TypedQuery<CourseInfoDTO> query = entityManager.createQuery(
-                "SELECT NEW org.example.entity.CourseInfoDTO(ac.courseTitle, ac.professorInfo.surname, ac.credit, sc.grade, sc.passed) " +
+                "SELECT NEW org.example.entity.DTO.CourseInfoDTO(ac.courseTitle, ac.professorInfo.surname, ac.credit, sc.grade, sc.passed) " +
                         "FROM SelectedCourse sc " +
                         "JOIN sc.course ac " +
                         "JOIN ac.professorInfo prof " +
@@ -98,5 +106,51 @@ public class SelectedCourseRepositoryImpl extends BaseRepositoryImpl<SelectedCou
         query.setParameter("currentSemester", currentSemester);
 
         return query.getResultList();
+    }
+
+    @Override
+    public List<StudentInfoDTO> findStudentsByCourseId(Long courseId) {
+        TypedQuery<StudentInfoDTO> query = entityManager.createQuery(
+                "SELECT NEW org.example.entity.DTO.StudentInfoDTO(u.name, u.surname, s.studentInfo.id, s.grade, s.evaluated) " +
+                        "FROM SelectedCourse s " +
+                        "JOIN UserInfo u ON s.studentInfo.id = u.id " +
+                        "WHERE s.course.id = :courseId",
+                StudentInfoDTO.class
+        );
+
+        query.setParameter("courseId", courseId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public SelectedCourse findToBeEvaluatedRecord(Long studentId, Long courseId) {
+        TypedQuery<SelectedCourse> query = entityManager.createQuery(
+                "SELECT sc FROM SelectedCourse sc " +
+                        "WHERE sc.studentInfo.id = :studentId AND sc.course.id = :courseId",
+                SelectedCourse.class
+        );
+
+        query.setParameter("studentId", studentId);
+        query.setParameter("courseId", courseId);
+
+        return query.getSingleResult();
+    }
+
+    @Override
+    public boolean areAllEvaluated(Long studentId, int currentTerm) {
+        TypedQuery<Boolean> query = entityManager.createQuery(
+                "SELECT CASE WHEN COUNT(sc) = 0 THEN false ELSE " +
+                        "CASE WHEN COUNT(sc) = SUM(CASE WHEN sc.evaluated = true THEN 1 ELSE 0 END) THEN true ELSE false END END " +
+                        "FROM SelectedCourse sc " +
+                        "WHERE sc.studentInfo.id = :studentId " +
+                        "AND sc.studentSemester = :currentTerm",
+                Boolean.class
+        );
+
+        query.setParameter("studentId", studentId);
+        query.setParameter("currentTerm", currentTerm);
+
+        return query.getSingleResult();
     }
 }
