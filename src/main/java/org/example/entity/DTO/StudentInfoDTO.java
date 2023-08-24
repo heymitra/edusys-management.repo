@@ -1,8 +1,14 @@
 package org.example.entity.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class StudentInfoDTO {
     private String name;
@@ -10,14 +16,6 @@ public class StudentInfoDTO {
     private Long studentInfoId;
     private double grade;
     private boolean isEvaluated;
-
-    public StudentInfoDTO(String name, String surname, Long studentInfoId, double grade, boolean isEvaluated) {
-        this.name = name;
-        this.surname = surname;
-        this.studentInfoId = studentInfoId;
-        this.grade = grade;
-        this.isEvaluated = isEvaluated;
-    }
 
     @Override
     public String toString() {

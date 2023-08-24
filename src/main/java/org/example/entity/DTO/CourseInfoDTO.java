@@ -1,8 +1,14 @@
 package org.example.entity.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class CourseInfoDTO {
     private String courseTitle;
@@ -10,14 +16,6 @@ public class CourseInfoDTO {
     private int credit;
     private double grade;
     private boolean isPassed;
-
-    public CourseInfoDTO(String courseTitle, String professor, int credit, double grade, boolean isPassed) {
-        this.courseTitle = courseTitle;
-        this.professor = professor;
-        this.credit = credit;
-        this.grade = grade;
-        this.isPassed = isPassed;
-    }
 
     @Override
     public String toString() {

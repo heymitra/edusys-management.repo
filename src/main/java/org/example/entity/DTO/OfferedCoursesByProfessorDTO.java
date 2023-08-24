@@ -1,17 +1,18 @@
 package org.example.entity.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class OfferedCoursesByProfessorDTO {
     private String courseTitle;
     private Long courseId;
-
-    public OfferedCoursesByProfessorDTO(String courseTitle, Long courseId) {
-        this.courseTitle = courseTitle;
-        this.courseId = courseId;
-    }
 
     @Override
     public String toString() {
