@@ -50,10 +50,10 @@ public class UserInfo extends BaseEntity<Long> {
     @JoinColumn(name = "user_credential_id")
     private UserCredential userCredential;
 
-    @OneToMany(mappedBy = "professorInfo")
+    @OneToMany(mappedBy = "professorInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailableCourse> taughtCourses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studentInfo")
+    @OneToMany(mappedBy = "studentInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SelectedCourse> selectedCourses;
 
     @Override

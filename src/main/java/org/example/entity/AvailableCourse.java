@@ -16,7 +16,7 @@ public class AvailableCourse extends BaseEntity<Long> {
     //    private int capacity;
     private int credit;
 
-    private String semester;
+//    private String semester;
 
     @ManyToOne
     @JoinColumn(name = "professor_info_id")
