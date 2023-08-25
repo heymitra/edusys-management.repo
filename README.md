@@ -43,6 +43,14 @@ The project's database is structured around the following tables:
 3. **Available Courses**: Includes course information and the respective assigned professors.
 4. **Selected Courses**: Serves as an intermediary table between available courses and user info, storing details about selected courses, grades, and evaluation status.
 
+## Technology Stack
+
+The EduSys Management System is built using the following technologies:
+
+- Java Persistence API (JPA) for object-relational mapping
+- Hibernate ORM for database interaction
+- SQL for querying and managing the database
+
 ## Layers
 
 The EduSys Management System employs a layered architecture to promote separation of concerns and maintainability:
